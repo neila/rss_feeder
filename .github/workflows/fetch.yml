@@ -4,12 +4,22 @@ on: [push, workflow_dispatch]
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        feedUrls:
+          [
+            "http://feeds.bbci.co.uk/news/world/rss.xml",
+            "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml",
+            "http://www.aljazeera.com/xml/rss/all.xml",
+            "https://www.e-ir.info/feed/",
+          ]
+
     steps:
       - name: feed update
         uses: lwojcik/github-action-feed-to-social-media@v2
         with:
           # base config
-          feedUrl: "http://feeds.bbci.co.uk/news/world/rss.xml"
+          feedUrl: ${{ matrix.feedUrls }}
           newestItemStrategy: "latestDate"
           postFormat: "{title} - {link}\n{description}\n{pubDate}"
           # Discord settings
