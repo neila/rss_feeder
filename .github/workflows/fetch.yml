@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: feed update
-        uses: lwojcik/github-action-feed-to-social-media
+        uses: lwojcik/github-action-feed-to-social-media@v2.4.1
         with:
           # base config
           feedUrl: ${{ matrix.feedUrls }}
