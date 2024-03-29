@@ -4,7 +4,7 @@ on:
     - cron: "*/15 * * * *"
 
 jobs:
-  fetch:
+  world-news:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
@@ -14,9 +14,9 @@ jobs:
             "http://feeds.bbci.co.uk/news/world/rss.xml",
             "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml",
             "http://www.aljazeera.com/xml/rss/all.xml",
+            "https://www.reutersagency.com/feed/?taxonomy=best-regions&post_type=best",
             "https://www.e-ir.info/feed/",
           ]
-
     steps:
       - name: feed update
         uses: lwojcik/github-action-feed-to-social-media@v2.4.1
@@ -29,3 +29,28 @@ jobs:
           discordEnable: true
           discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
           discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN?thread_id=1223241787645235240"
+
+  japan-news:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        feedUrls:
+          [
+            "https://www.japantimes.co.jp/feed/",
+            "https://rss.asahi.com/rss/asahi/newsheadlines.rdf",
+            "https://www3.nhk.or.jp/rss/news/cat0.xml",
+            "https://english.kyodonews.net/rss/all.xml",
+          ]
+    steps:
+      - name: feed update
+        uses: lwojcik/github-action-feed-to-social-media@v2.4.1
+        with:
+          # base config
+          feedUrl: ${{ matrix.feedUrls }}
+          newestItemStrategy: "latestDate"
+          postFormat: "{title} - {link}\n{description}\n{pubDate}"
+          # Discord settings
+          discordEnable: true
+          discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
+          discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN?thread_id=1223262951486656583"
