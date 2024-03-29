@@ -5,7 +5,7 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - name: fetch feed and post to discord
+      - name: feed update
         uses: lwojcik/github-action-feed-to-social-media@v2
         with:
           # base config
@@ -15,4 +15,4 @@ jobs:
           # Discord settings
           discordEnable: true
           discordPostFormat: "{title} - {link}\n{description}\n{pubDate}"
-          discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN"
+          discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN/github"
