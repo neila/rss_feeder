@@ -8,7 +8,7 @@ jobs:
   world-news:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
+      # max-parallel: 1
       matrix:
         feedUrls:
           [
@@ -30,19 +30,11 @@ jobs:
           discordEnable: true
           discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
           discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN?thread_id=1223241787645235240"
-      - name: revert code
-        shell: bash
-        run: |
-          git pull
-          cd .
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git reset --hard HEAD~1
 
   japan-news:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
+      # max-parallel: 1
       matrix:
         feedUrls:
           [
@@ -63,10 +55,3 @@ jobs:
           discordEnable: true
           discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
           discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN?thread_id=1223262951486656583"
-      - name: revert code
-        run: |
-          git pull
-          cd .
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git reset --hard HEAD~1
