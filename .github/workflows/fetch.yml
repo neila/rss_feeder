@@ -1,0 +1,18 @@
+name: RSS feed
+on: [push, workflow_dispatch]
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fetch feed and post to discord
+        uses: lwojcik/github-action-feed-to-social-media@v2
+        with:
+          # base config
+          feedUrl: "http://feeds.bbci.co.uk/news/world/rss.xml"
+          newestItemStrategy: "latestDate"
+          postFormat: "{title}\n{link}\n{pubDate}"
+          # Discord settings
+          discordEnable: true
+          discordPostFormat: "{title}\n{link}\n{pubDate}"
+          discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN?thread_id=1223241787645235240"
