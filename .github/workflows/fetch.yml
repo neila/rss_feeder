@@ -1,5 +1,7 @@
 name: RSS feed
-on: [push, workflow_dispatch]
+on:
+  schedule:
+    - cron: "*/15 * * * *"
 
 jobs:
   fetch:
