@@ -25,5 +25,5 @@ jobs:
           postFormat: "{title} - {link}\n{description}\n{pubDate}"
           # Discord settings
           discordEnable: true
-          discordPostFormat: "<#709878421273968772> {title}\n{link}\n\n{description}\n\n{pubDate}"
+          discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
           discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN?thread_id=1223241787645235240"
