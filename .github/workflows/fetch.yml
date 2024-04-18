@@ -2,7 +2,7 @@ name: RSS feed
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "0 0 * * *"
 
 jobs:
   world-news:
@@ -40,7 +40,7 @@ jobs:
         feedUrls:
           [
             "https://www.japantimes.co.jp/feed/",
-            "https://rss.asahi.com/rss/asahi/newsheadlines.rdf",
+            "https://assets.wor.jp/rss/rdf/nikkei/economy.rdf",
             "https://www3.nhk.or.jp/rss/news/cat0.xml",
             "https://english.kyodonews.net/rss/all.xml",
           ]
@@ -55,3 +55,29 @@ jobs:
           discordEnable: true
           discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
           discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN?thread_id=1223262951486656583"
+
+  blogs:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        feedUrls:
+          [
+            "https://www.zephoria.org/thoughts/feed",
+            "https://www.eff.org/deeplinks",
+            "https://gunther.link/",
+            "https://dooce.com/feed/",
+            "https://www.ribbonfarm.com/feed/",
+          ]
+    steps:
+      - name: feed update
+        uses: lwojcik/github-action-feed-to-social-media@v2.4.1
+        with:
+          # base config
+          feedUrl: ${{ matrix.feedUrls }}
+          newestItemStrategy: "latestDate"
+          postFormat: "{title} - {link}\n{description}\n{pubDate}"
+          # Discord settings
+          discordEnable: true
+          discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
+          discordWebhookUrl: "https://discord.com/api/webhooks/1223212073203269722/CPHMmAtiMZ0UL0Koeyf1KI5MyDzm3Y4feLt623DmGoN4xoh9--eQEG0GXbPr0ZZ1ZMuN"
