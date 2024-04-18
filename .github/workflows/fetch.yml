@@ -64,8 +64,7 @@ jobs:
         feedUrls:
           [
             "https://www.zephoria.org/thoughts/feed",
-            "https://www.eff.org/deeplinks",
-            "https://gunther.link/",
+            "https://gunther.link/index.xml",
             "https://dooce.com/feed/",
             "https://www.ribbonfarm.com/feed/",
           ]
