@@ -62,6 +62,11 @@ jobs:
       matrix:
         feedUrls:
           [
+            "https://thethirdwave.co/blog/feed/",
+            "https://www.lesswrong.com/feed.xml?view=curated-rss",
+            "https://annasofia.xyz/feed",
+            "https://xn--gckvb8fzb.com/index.xml",
+            "https://gwern.substack.com/feed",
             "https://www.zephoria.org/thoughts/feed",
             "https://gunther.link/index.xml",
             "https://dooce.com/feed/",
