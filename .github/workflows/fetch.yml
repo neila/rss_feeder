@@ -83,4 +83,4 @@ jobs:
           # Discord settings
           discordEnable: true
           discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
-          discordWebhookUrl: ${{ format('{0}{1}', secrets.DISCORD_WEBHOOK, '?thread_id=1223241787645235240') }}  
+          discordWebhookUrl: ${{ secrets.DISCORD_WEBHOOK }}  
