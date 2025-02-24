@@ -29,7 +29,7 @@ jobs:
           # Discord settings
           discordEnable: true
           discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
-          discordWebhookUrl: ${{ format('{0}{1}', secrets.DISCORD_WEBHOOK, '?thread_id=1223241787645235240') }}
+          discordWebhookUrl: "${{ format('{0}{1}', secrets.DISCORD_WEBHOOK, '?thread_id=1223241787645235240') }}"
 
   japan-news:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
           postFormat: "{title} - {link}\n{description}\n{pubDate}"
           discordEnable: true
           discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
-          discordWebhookUrl: ${{ format('{0}{1}', secrets.DISCORD_WEBHOOK, '?thread_id=1223262951486656583') }}
+          discordWebhookUrl: "${{ format('{0}{1}', secrets.DISCORD_WEBHOOK, '?thread_id=1223262951486656583') }}"
 
   blogs:
     runs-on: ubuntu-latest
@@ -83,4 +83,4 @@ jobs:
           # Discord settings
           discordEnable: true
           discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
-          discordWebhookUrl: ${{ secrets.DISCORD_WEBHOOK }}  
+          discordWebhookUrl: "${{ secrets.DISCORD_WEBHOOK }}"
