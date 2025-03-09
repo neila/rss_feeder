@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
-        feedUrls:
+        feedUrls: 
           [
             "http://feeds.bbci.co.uk/news/world/rss.xml",
             "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml",
@@ -33,9 +34,10 @@ jobs:
 
   japan-news:
     runs-on: ubuntu-latest
+    needs: [world-news]
     strategy:
       fail-fast: false
-      # max-parallel: 1
+      max-parallel: 1
       matrix:
         feedUrls:
           [
@@ -57,8 +59,10 @@ jobs:
 
   blogs:
     runs-on: ubuntu-latest
+    needs: [japan-news]
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         feedUrls:
           [
