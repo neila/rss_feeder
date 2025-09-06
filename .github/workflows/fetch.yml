@@ -70,6 +70,7 @@ jobs:
             "https://gunther.link/index.xml",
             "https://dooce.com/feed/",
             "https://www.ribbonfarm.com/feed/",
+            "https://www.shenmacro.com/atom.xml",
           ]
     steps:
       - name: feed update
