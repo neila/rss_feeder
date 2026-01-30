@@ -25,6 +25,8 @@ def load_state():
     with open(STATE_PATH, "r", encoding="utf-8") as f:
       return json.load(f)
   except FileNotFoundError:
+    with open('STATE_PATH', 'w') as file:
+      json.dump({}, file)
     return {}
   except json.JSONDecodeError:
     return {}
