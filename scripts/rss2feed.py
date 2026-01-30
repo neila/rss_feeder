@@ -86,7 +86,7 @@ def main():
   for sid, _, _ in new_items:
     seen.add(sid)
 
-  lines = [f"- [{title}]({link}) - {description}".strip() for _, title, link in new_items[:50]]
+  lines = [f"- [{title}]({link}){f': {description}' if description else ''}".strip() for _, title, link in new_items[:50]]
   header = f"RSS update ({len(new_items)} new entries):"
   chunks = chunk_lines([header] + lines)
 
