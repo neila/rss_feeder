@@ -76,6 +76,7 @@ def main():
         continue
       title = getattr(e, "title", "(no title)")
       link = getattr(e, "link", "")
+      description = getattr(e, "description", None)
       new_items.append((sid, title, link))
 
   if not new_items:
