@@ -1,4 +1,4 @@
-import os, json, time, hashlib, urllib.parse
+import os, json, time, re, html, hashlib, urllib.parse
 import feedparser
 import requests
 
@@ -8,6 +8,8 @@ CATEGORY = os.environ.get("CATEGORY", "blogs")
 FEEDS = json.loads(os.environ.get("FEED_URLS", "[]"))
 
 STATE_PATH = f"cache/updates_{CATEGORY}.json"
+
+TAG_RE = re.compile(r"<[^>]+>")
 
 def stable_id(entry):
   # prefer explicit ids, then link, then hashed title+published
@@ -63,6 +65,14 @@ def chunk_lines(lines, max_chars=1950): # discord hard limit is 2000; keep margi
     out.append(cur.rstrip())
   return out
 
+def strip_html(s: str) -> str:
+  if not s:
+    return ""
+  s = html.unescape(s)
+  s = TAG_RE.sub("", s)
+  s = re.sub(r"\s+", " ", s).strip()
+  return s
+
 def main():
   state = load_state()
   seen = set(state.get("seen_ids", []))
@@ -76,7 +86,7 @@ def main():
         continue
       title = getattr(e, "title", "(no title)")
       link = getattr(e, "link", "")
-      description = getattr(e, "description", "")
+      description = strip_html(getattr(e, "description", "") or getattr(e, "summary", ""))
       new_items.append((sid, title, link, description))
 
   if not new_items:
