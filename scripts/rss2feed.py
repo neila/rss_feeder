@@ -55,10 +55,20 @@ def discord_post(content):
     print(f"status {r.status_code}: {r.text[:2000]}")
   r.raise_for_status()
 
+def clamp_line(s: str, max_len: int = 280) -> str:
+  s = (s or "").strip()
+  if len(s) <= max_len:
+    return s
+  return s[: max_len - 1] + "…"
+  
 def chunk_lines(lines, max_chars=1950): # discord hard limit is 2000; keep margin
   out, cur = [], ""
   for ln in lines:
+    ln = clamp_line(ln, 350)
     add = (ln + "\n")
+    if len(add) > max_chars:
+      ln = ln[: max_chars - 2] + "…"
+      add = ln + "\n"
     if len(cur) + len(add) > max_chars and cur:
       out.append(cur.rstrip())
       cur = ""
@@ -104,6 +114,8 @@ def main():
   chunks = chunk_lines([header] + lines)
 
   for msg in chunks:
+    if len(msg) > 2000:
+      msg = msg[:1999] + "…"
     discord_post(msg)
 
   state["updated_at"] = int(time.time())
