@@ -3,7 +3,7 @@ import feedparser
 import requests
 
 BASE_WEBHOOK = os.environ.get("WEBHOOK_URL")
-THREAD_ID = os.environ.get("THREAD_ID")
+THREAD_ID = os.environ.get("THREAD_ID", "")
 CATEGORY = os.environ.get("CATEGORY", "blogs")
 FEEDS = json.loads(os.environ.get("FEED_URLS", "[]"))
 
