@@ -5,83 +5,41 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  world-news:
+  run:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        feedUrls: 
-          [
-            "http://feeds.bbci.co.uk/news/world/rss.xml",
-            "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml",
-            "http://www.aljazeera.com/xml/rss/all.xml",
-            "https://www.reutersagency.com/feed/?taxonomy=best-regions&post_type=best",
-            "https://www.e-ir.info/feed/",
-          ]
+        include:
+          - category: world_news
+            thread_id: "1223241787645235240"
+            feeds: '["http://feeds.bbci.co.uk/news/world/rss.xml","https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml","http://www.aljazeera.com/xml/rss/all.xml","https://www.reutersagency.com/feed/?taxonomy=best-regions&post_type=best","https://www.e-ir.info/feed/"]'
+          - category: jp_news
+            thread_id: "1223262951486656583"
+            feeds: '["https://www.japantimes.co.jp/feed/","https://www3.nhk.or.jp/rss/news/cat0.xml","https://english.kyodonews.net/rss/all.xml","https://richardkatz.substack.com/feed"]'
+          - category: blogs
+            thread_id: ""
+            feeds: '["https://thethirdwave.co/blog/feed/","https://www.lesswrong.com/feed.xml?view=curated-rss","https://annasofia.xyz/feed","https://xn--gckvb8fzb.com/index.xml","https://gwern.substack.com/feed","https://www.zephoria.org/thoughts/feed","https://gunther.link/index.xml","https://dooce.com/feed/","https://www.ribbonfarm.com/feed/","https://www.shenmacro.com/atom.xml"]'
     steps:
-      - name: feed update
-        uses: lwojcik/github-action-feed-to-social-media@v2.4.1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          # base config
-          feedUrl: ${{ matrix.feedUrls }}
-          newestItemStrategy: "latestDate"
-          postFormat: "{title} - {link}\n{description}\n{pubDate}"
-          # Discord settings
-          discordEnable: true
-          discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
-          discordWebhookUrl: "${{ format('{0}{1}', secrets.DISCORD_WEBHOOK, '?thread_id=1223241787645235240') }}"
+          python-version: "3.12"
+      - run: pip install -q feedparser requests
+      - name: fetch + post
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+          CATEGORY: ${{ matrix.category }}
+          THREAD_ID: ${{ matrix.thread_id }}
+          FEED_URLS: ${{ matrix.feeds }}
+        run: python scripts/rss2feed.py
 
-  japan-news:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        feedUrls:
-          [
-            "https://www.japantimes.co.jp/feed/",
-            "https://www3.nhk.or.jp/rss/news/cat0.xml",
-            "https://english.kyodonews.net/rss/all.xml",
-            "https://richardkatz.substack.com/feed",
-          ]
-    steps:
-      - name: feed update
-        uses: lwojcik/github-action-feed-to-social-media@v2.4.1
-        with:
-          # base config
-          feedUrl: ${{ matrix.feedUrls }}
-          newestItemStrategy: "latestDate"
-          postFormat: "{title} - {link}\n{description}\n{pubDate}"
-          discordEnable: true
-          discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
-          discordWebhookUrl: "${{ format('{0}{1}', secrets.DISCORD_WEBHOOK, '?thread_id=1223262951486656583') }}"
-
-  blogs:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        feedUrls:
-          [
-            "https://thethirdwave.co/blog/feed/",
-            "https://www.lesswrong.com/feed.xml?view=curated-rss",
-            "https://annasofia.xyz/feed",
-            "https://xn--gckvb8fzb.com/index.xml",
-            "https://gwern.substack.com/feed",
-            "https://www.zephoria.org/thoughts/feed",
-            "https://gunther.link/index.xml",
-            "https://dooce.com/feed/",
-            "https://www.ribbonfarm.com/feed/",
-            "https://www.shenmacro.com/atom.xml",
-          ]
-    steps:
-      - name: feed update
-        uses: lwojcik/github-action-feed-to-social-media@v2.4.1
-        with:
-          # base config
-          feedUrl: ${{ matrix.feedUrls }}
-          newestItemStrategy: "latestDate"
-          postFormat: "{title} - {link}\n{description}\n{pubDate}"
-          # Discord settings
-          discordEnable: true
-          discordPostFormat: "<@709878421273968772> **{title}**\n{link}\n\n{description}\n\n{pubDate}"
-          discordWebhookUrl: "${{ secrets.DISCORD_WEBHOOK }}"
+      - name: commit state if changed
+        run: |
+          git config user.name "[cron] RSS pull"
+          git config user.email "40727091+neila@users.noreply.github.com"
+          git add cache/updates*.json
+          if ! git diff --cached --quiet; then
+            git commit -m "$(date -u +"%Y-%m-%d") pull RSS feed"
+            git push
+          fi
