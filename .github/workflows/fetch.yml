@@ -48,7 +48,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: rss-state-${{ matrix.category }}
+          pattern: rss-state-*
           path: cache
           merge-multiple: true
 
