@@ -51,6 +51,8 @@ def thread_parse():
 def discord_post(content):
   webhook_url = thread_parse()
   r = requests.post(webhook_url, json={"content": content}, timeout=20)
+  if r.status_code >= 400:
+    print(f"status {r.status_code}: {r.text[:2000]}")
   r.raise_for_status()
 
 def chunk_lines(lines, max_chars=1950): # discord hard limit is 2000; keep margin
