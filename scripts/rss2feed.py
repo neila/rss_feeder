@@ -77,17 +77,17 @@ def main():
       title = getattr(e, "title", "(no title)")
       link = getattr(e, "link", "")
       description = getattr(e, "description", None)
-      new_items.append((sid, title, link))
+      new_items.append((sid, title, link, description))
 
   if not new_items:
     print("no new items")
     return
 
   # mark seen before posting to avoid duplicate spam if discord call retries mid-run
-  for sid, _, _ in new_items:
+  for sid, _, _, _ in new_items:
     seen.add(sid)
 
-  lines = [f"- [{title}]({link}){f': {description}' if description else ''}".strip() for _, title, link in new_items[:50]]
+  lines = [f"- [{title}]({link}){f': {description}' if description else ''}".strip() for _, title, link, description in new_items[:50]]
   header = f"RSS update ({len(new_items)} new entries):"
   chunks = chunk_lines([header] + lines)
 
