@@ -41,6 +41,7 @@ jobs:
             "https://www.japantimes.co.jp/feed/",
             "https://www3.nhk.or.jp/rss/news/cat0.xml",
             "https://english.kyodonews.net/rss/all.xml",
+            "https://richardkatz.substack.com/feed",
           ]
     steps:
       - name: feed update
