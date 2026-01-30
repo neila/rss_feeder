@@ -40,7 +40,6 @@ jobs:
         with:
           name: rss-state-${{ matrix.category }}
           path: cache/updates_${{ matrix.category }}.json
-          merge-multiple: true
 
   push:
     needs: pull
@@ -51,7 +50,7 @@ jobs:
         with:
           name: rss-state-${{ matrix.category }}
           path: cache
-          
+          merge-multiple: true
 
       - name: commit state if changed
         run: |
