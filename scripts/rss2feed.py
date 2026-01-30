@@ -38,7 +38,7 @@ def save_state(state):
 def thread_parse():
   if not BASE_WEBHOOK:
     raise RuntimeError("missing DISCORD_WEBHOOK")
-  if not THREAD_ID:
+  if THREAD_ID == "": 
     return BASE_WEBHOOK
   # append thread_id safely
   parsed = urllib.parse.urlparse(BASE_WEBHOOK)
