@@ -40,13 +40,12 @@ def save_state(state):
 def thread_parse():
   if not BASE_WEBHOOK:
     raise RuntimeError("missing WEBHOOK_URL")
-  if not THREAD_ID:
-    print("no thread")
+  if not (THREAD_ID or "").strip():
     return BASE_WEBHOOK
   # append thread_id safely
   parsed = urllib.parse.urlparse(BASE_WEBHOOK)
   q = dict(urllib.parse.parse_qsl(parsed.query))
-  q["thread_id"] = THREAD_ID
+  q["thread_id"] = (THREAD_ID or "").strip()
   return urllib.parse.urlunparse(parsed._replace(query=urllib.parse.urlencode(q)))
 
 def discord_post(content):
